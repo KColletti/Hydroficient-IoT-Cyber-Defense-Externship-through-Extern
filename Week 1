@@ -1,0 +1,100 @@
+This module drops you into a scenario with consequences: a $4.2M incident, 2,000 guests, and a client counting on you. 
+- I am a Junior Security Engineer at Hydroficient, a company that builds IoT water management systems for commercial properties. -> need to secure systems so that when they say "leak detected," people believe it. And so that no attacker can manipulate that alert, suppress it, or trigger a false one.
+  -three of your HYDROLOGIC devices — one for the main building, one for the pool and spa, and one for the kitchen and laundry.
+Each one monitors water pressure and flow. The system automatically adjusts to reduce waste — which has already cut our water bill by 18%. And there's a dashboard where my team can see everything in real-time, Big red button= Emergency shutoff (entire building zone) 
+    - Your job: secure systems so alerts are trusted and attackers can't manipulate them
+
+An IoT device is anything that:
+- Collects data from the physical world
+- Connects to a network
+- Sends that data somewhere useful
+
+Almost everything is connected to the internet, as long as it has an unique identifier (IP). 
+ - IoT ecosystem has an embedded system to allow it to collect, send and act on data (sensor or antenna-> data hub to be analyzed). 
+ - Challenges to IoT is security and privacy, data managment, mass corruption, compatibility issues. 
+    - Devices = smartphone, fitbit, ring doorbell, nest thermostat, heart monitors (Healthcare -> Patient vital signs), Soil sensors (agriculture -> Moisture, nutrients, pH levels), Equipment sensors (Manufacturing -> Vibration, temperature, wear), Fleet trackers (Transportation-> Location, fuel, driver behavior), Water systems (Buildings-> Flow, pressure, leaks). 
+
+IoT devices work automatically:
+[SENSE] → [SEND] → [RECEIVE] → [ACT]
+
+IoT devices are often the weakest link in any security system.
+Why? Because they're designed for function, not security:
+They're cheap — Security features add cost, so they get cut
+They're simple — Minimal processing power means weak encryption
+They're forgotten — Once installed, nobody updates them
+They're always on — 24/7 connectivity means 24/7 exposure
+They live for years — A sensor installed in 2015 might run until 2030
+
+Optimize water flow and cost: 
+We installed three HYDROLOGIC flow management systems — one for each water service line:
+Device 01-> Main Building Mechanical Room -> Guest rooms, lobbies, restaurants
+Device 02-> Pool/Spa Wing -> Pool, spa, fitness center
+Device 03-> Kitchen/Laundry Wing -> Commercial kitchen, laundry facilities
+  - Three critical water lines. If any one of them gets compromised, a major part of the hotel loses water — or worse, doesn't know it should
+
+water pressure gets measured by PSI (pounds per square inch), Most homes run around 40-60 PSI
+
+When you're analyzing any IoT system, look for where the controls are.
+Anyone who gains access to those controls can affect the physical world. That's what makes IoT security different from traditional cybersecurity — the consequences aren't just data breaches. They're real-world impacts.
+
+1. Device to Cloud — Could someone intercept this communication?
+2. Cloud Server — Could someone compromise Hydroficient's infrastructure?
+3. Dashboard Access — Could someone steal credentials or session tokens
+4. Remote Commands — Could someone send unauthorized commands?
+Each of these is a potential vulnerability. Your job is to find them before an attacker does.
+
+MQTT (Message Queue Telemetry Transport) is a lightweight messaging protocol designed specifically for IoT. It's the standard way our HYDROLOGIC devices communicate with the cloud.Big platforms like AWS, Azure, and Google Cloud all use it. What you’ll learn here is exactly how real-world systems communicate — just like in professional IoT projects.
+
+Lightweight ->Uses minimal bandwidth — critical for constrained devices
+Reliable ->Guarantees message delivery (no lost readings)
+Scalable -> Handles thousands of devices without breaking
+Fast -> Low latency for real-time monitoring
+
+Imagine building an IoT system where each device needs to send data to multiple places:
+A database for storage
+A dashboard for real-time display
+An alert system for notifications
+An analytics engine for insights
+ 
+If each device connected directly to each system, you'd have a tangled mess
+
+- Each device also needs to:
+Know the address of every system it talks to
+Handle what happens if one system goes offline
+Be updated whenever a new system is added
+
+connection count = 1 device 4 systems = 4 connections, 
+10 devices 4 systems = 40 connections 
+
+How it works:
+- Devices publish their data to the broker
+- Systems subscribe to the data they need
+- The broker handles all the routing
+    - No device needs to know who's listening. No system needs to know where data originates. The broker manages everything
+
+Dashboard -> hydroficient/grandmarina/# -> Everything from Grand Marina
+   - Wildcards:
+# means "everything below this level"
++ means "any single level"
+These wildcards are powerful — but also dangerous if access isn't controlled properly.
+
+This message gets published to the topic:
+hydroficient/grandmarina/device-01/pressure/upstream
+Every system subscribed to that topic — or a wildcard that matches it — receives the message instantly.
+ 
+Key fields:
+device_id — Which device sent this
+timestamp — When the reading was taken (critical for replay attack detection)
+value + unit — The actual measurement
+location — Context for where this device sits in the property
+
+⚠️ Security Note:
+The same channel that carries sensor data can carry commands. Commands affect the physical world. If an attacker gains the ability to publish to command topics, they can:
+Adjust gate positions
+Trigger emergency shutoffs
+Manipulate system behavior
+This is why command topics require the highest level of security.
+
+It's like Slack for machines.
+
+
