@@ -99,3 +99,179 @@ It's like Slack for machines.
 
 Identify IoT Components Around You PDF 
 
+- all admined passwords easy to get into 
+
+5 sins of IoT Security = systemic problems with how IoT devices get built and deployed
+
+Sin 1: Cost Pressure
+ - IoT devices need to be affordable. When a manufacturer is selling thousands of units, every dollar matters.
+ - The result? Security features get cut. Better encryption? Too expensive. Secure boot? Adds $3 per unit. Hardware security modules? Not in the budget.
+ - At The Grand Marina: The HYDROLOGIC system is a premium product, but many IoT devices in the building (HVAC sensors, door locks, thermostats) were purchased on cost alone.
+
+Sin 2: Limited Computing Power
+ - Many IoT devices have processors less powerful than a calculator from 1995. They're designed to do one thing efficiently, not run complex security software.
+ - Strong encryption requires computing cycles. On a battery-powered sensor, every computation drains power.
+ - At The Grand Marina: The HYDROLOGIC devices are mains-powered and have more computing headroom, but simpler IoT devices in the building (motion sensors, leak detectors) run on minimal hardware with severe memory constraints.
+
+Sin 3: Update Nightmares
+- Your phone gets security updates every month. IoT devices? Most never get updated after they're installed.
+- Some devices can't be updated at all (no update mechanism)
+ - Some updates require physical access (someone has to visit each device)
+ - Some manufacturers go out of business (who sends the update then?)
+ - At The Grand Marina: The HYDROLOGIC system supports over-the-air updates via secure download. But many other IoT devices in the building — thermostats, lighting controllers — haven't been updated since installation.
+
+Sin 4: Default Credentials
+ - Devices ship with default usernames and passwords. The manual says "Change these immediately." Nobody does.
+ - In 2016, researchers found that 15% of IoT devices used one of just four password combinations:
+    - admin/admin
+    - admin / 1234
+    - root/root
+    - admin/password
+ - At The Grand Marina: The HYDROLOGIC system uses proper device certificates. But a security audit of the hotel found that 23 other IoT devices — smart TVs, IP cameras, network printers — were still using default credentials and exposed to the network.
+
+Sin 5: Long Lifespans
+ - Your phone lasts 2-3 years. An industrial IoT device might run for 15 years.
+ - The security landscape in 2019 was different from 2024. It will be completely different in 2034. But those devices will still be running. Still connected. Still vulnerable to attacks that didn't exist when they were built.
+ - At The Grand Marina: The HYDROLOGIC system has an indefinite warranty while the service contract is active. But what about the hotel's building management system from 2015? Or the smart thermostats from 2017? Those devices will still be on the network for years to come.
+
+Every security decision you'll ever make comes down to three questions: Can they see it? Can they change it? Can they stop it? Let’s understand CIA in this module. 
+
+The CIA Triad: A Security Framework
+- The CIA Triad is the foundation of information security. Every security decision, every vulnerability assessment, every defense strategy comes back to these three principles:
+Confidentiality — Keeping secrets secret
+Integrity — Keeping data accurate and trustworthy
+Availability — Keeping systems accessible when needed
+When analyzing any system, always ask all three questions. A system that excels at one but fails at another isn't secure — it's incomplete
+
+Threats to Confidentiality:
+
+Eavesdropping on network traffic
+Unauthorized access to dashboards
+Data leaks from poor access controls
+Social engineering ("Hi, I'm from IT...")
+ - If Confidentiality Fails: An attacker reads sensor data and learns when the hotel's east wing has low water usage — indicating empty rooms. They use this information to plan a burglary.
+
+Threats to Integrity:
+
+Attackers modifying data in transit
+Fake sensors sending false readings
+Replay attacks (re-sending old data)
+Database tampering
+ - If Integrity Fails: An attacker intercepts sensor readings and changes them. A flow rate of 8.0 GPM (indicating a major leak) becomes 0.8 GPM (normal). The leak continues undetected until the ceiling collapses.
+
+Threats to Availability:
+
+Denial of Service attacks (flooding with traffic)
+Hardware failures
+Network outages
+Resource exhaustion
+ - If Availability Fails: An attacker overwhelms the cloud server with garbage requests. Legitimate data from the HYDROLOGIC devices can't get through. The dashboard shows stale data — or nothing at all. Meanwhile, a real leak is flooding the third floor — and nobody knows.
+
+Add strong encryption -> Improves Confidentiality, may reduce Availability (processing overhead)
+Require multi-factor authentication -> Improves Confidentiality, may reduce Availability (harder to access quickly)
+Redundant systems -> Improves Availability, may reduce Confidentiality (more copies = more exposure)
+Strict access controls -> Improves Confidentiality and Integrity, may reduce Availability (lockouts)
+ - Security engineering isn't about maximizing all three. It's about finding the right balance for the specific system.
+  - Then prioritize. For some systems, availability matters most (a hospital's life support). For others, confidentiality is critical (a bank's customer data). For The Grand Marina's shutoff valves, all three are essential.
+
+Attack 1: Eavesdropping
+👂The attacker is secretly listening in.
+Imagine someone overhearing your private phone call. In tech, they’re silently watching data move across the network to steal information like passwords or messages, The attacker positions themselves on the network and captures packets. If the data isn't encrypted, they can read it directly
+  normal traffic = sensor - data -> broker 
+  with eavesdropper = sensor - data - attacker (sees everything) -> broker 
+
+If the MQTT traffic isn't encrypted, an attacker could see:
+ - Every sensor reading (revealing occupancy patterns)
+ - Topic names (learning the system structure)
+ - Commands being sent (understanding how to control valves)
+ - Possibly credentials (if authentication is weak)
+CIA Impact: Violates Confidentiality
+
+Attack 2: Spoofing
+🎭The attacker is pretending to be someone else.
+It's like getting a text that looks like it’s from your bank — but it’s actually from a scammer trying to trick you.
+ 
+Types:
+Device Spoofing: Fake sensor joins the network
+Message Spoofing: Send messages claiming to be from a real device
+Identity Spoofing: Pretend to be an authorized operator
+
+CIA Impact: Violates Integrity (and Authentication)
+
+Attack 3: Replay Attacks
+🔁The attacker records a real message and sends it again later.
+Imagine you use a keycard to open a door. Someone secretly records that signal, then uses it later to open the door again — without your permission.
+Step 1- Capture 
+ Operator - emergency shutoff device 01- attacker (attacker records this)- > Cloud API 
+
+Step 2- Replay (later) 
+  attacker (same message, valid format, wrong time) - emergency shutoff device 01 -> cloud API
+ - The command was legitimate when it was sent. But replaying it during a fire (when water is needed for sprinklers) could be catastrophic.
+CIA Impact: Violates Integrity (the command is technically "real" but contextually wrong)
+
+Attack 4: Man-in-the-Middle (MITM)
+🕵️ The attacker sits between two people and watches or changes their messages.
+Think of two people passing notes in class. A third person intercepts the note, reads it, maybe changes it, and then passes it along — without anyone noticing.
+ normal = sensor <-> broker 
+ man-in- the- middle = sensor <-> attacker (can read AND modify)<-> broker
+
+Unlike eavesdropping (which is passive), MITM is active. The attacker can:
+  - Read all messages (like eavesdropping)
+  - Modify messages before forwarding them
+  - Inject entirely new messages
+  - Block messages selectively
+
+An attacker intercepts a sensor reading:
+Original: {"flow": 8.0, "unit": "gpm"} (leak!)
+Modified: {"flow": 0.8, "unit": "gpm"} (normal)
+The dashboard shows normal. The leak continues.
+
+CIA Impact: Violates Confidentiality AND Integrity
+
+
+Attack 5: Denial of Service (DoS)
+🚫The attacker floods a system with so much traffic that real users can't get in.
+It’s like hundreds of fake customers crowding into a store so real shoppers can’t even get through the door.
+  normal = sensors <- legitmate traffic -> broker -> dashboard 
+  under attack = sensors (legitimate traffic) 
+                Attacker (flood of garbage)   -> both go to Broker -> Dashboard 
+  - The attacker doesn't need to break in. They just need to send enough traffic to exhaust the broker's resources
+
+The cloud API is rated for 1,000 requests per second. The attacker sends 50,000 per second.
+The server can't keep up. Legitimate HYDROLOGIC readings get delayed or dropped. The dashboard shows stale data — or nothing at all. And nobody notices the leak that started three minutes ago.
+Worse: during a DoS attack, the emergency shutoff button might not work either.
+ 
+CIA Impact: Violates Availability
+
+Attack 6: Unauthorized Access
+🔓The attacker breaks into a system they’re not allowed to enter.
+This is like sneaking into a locked room using someone else’s key — or finding a secret way in without one.
+ 
+Common methods:
+ - Default credentials (admin/admin)
+ - Stolen passwords (phishing, breach)
+ - Exploited vulnerabilities (unpatched software)
+ - Misconfigured access controls (accidentally public)
+
+An attacker finds the MQTT broker is accessible from the internet (misconfigured firewall). It doesn't require authentication — anyone can connect.
+They subscribe to # (all topics). Now they see everything.
+Then they publish to hydroficient/grandmarina/commands/#. Now they control everything.
+
+CIA Impact: Violates ALL THREE (Confidentiality, Integrity, AND Availability)
+
+Key Insight: The "easiest" attacks (Eavesdropping, DoS, Unauthorized Access with default creds) are often the most common. Attackers prefer low-hanging fruit.
+
+Here's what I want you to internalize: when I assess a new system, I mentally walk through each attack type.
+"Could someone eavesdrop here? How?"
+"What if they spoofed this sensor?"
+"Where's the replay vulnerability?"
+
+Recap
+ - Six attack types to know: Eavesdropping (listening), Spoofing (faking identity), Replay (re-sending old commands), Man-in-the-Middle (intercepting and modifying), Denial of Service (overwhelming), and Unauthorized Access (breaking in)
+ - The easiest attacks (default credentials, unencrypted traffic) are the most common — attackers prefer low-hanging fruit
+
+
+
+
+
+
