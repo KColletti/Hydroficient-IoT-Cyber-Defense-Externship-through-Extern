@@ -273,5 +273,36 @@ Recap
 
 Asset CIA Analysis PDF (goes over Asset CIA Analysis, Attack Mapping, Priority Ranking) 
 
+Think Like An Attacker 
+
+When security professionals assess a system, they don't ask "Is this secure?"
+That question is too vague. It leads to hand-waving and false confidence.
+Instead, they ask four specific questions:
+What's valuable here? (What would an attacker want?)
+What's exposed? (What can an attacker reach?)
+What's weak? (Where might defenses fail?)
+What's the path? (How does an attacker get from exposed to valuable?)
+
+Defenders only have to stop them once.
+- Require multi-factor authentication → stolen password alone isn't enough
+- Encrypt all device communication → attacker can't read data even if they intercept it
+- Require device certificates → attacker can't impersonate a HYDROLOGIC device
+- Add monitoring and alerting → unusual activity triggers investigation
+- Implement role-based access → operators can't access functions they don't need
+Each defense blocks a step in the path. Stack enough defenses, and the attack becomes impractical.
+This is called defense in depth — multiple layers of protection so that no single failure is catastrophic.
+- Key insight: Perfect security is impossible. But making attacks impractical is achievable.
+Then design defenses that break the path at multiple points.
+
+
+For The Grand Marina
+What's valuable?
+Dashboard control, shutoff capability, sensor data
+What's exposed?
+Guest WiFi, web dashboard, cloud API
+What's weak?
+Default credentials on other IoT devices, potential network misconfigurations
+What's the path?
+Guest WiFi → IoT network → MQTT broker → spoofed commands
 
 
