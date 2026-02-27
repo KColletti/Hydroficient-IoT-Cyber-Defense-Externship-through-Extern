@@ -305,4 +305,14 @@ Default credentials on other IoT devices, potential network misconfigurations
 What's the path?
 Guest WiFi → IoT network → MQTT broker → spoofed commands
 
+Think like an attacker: 
+- Plan Your Attack 
+  - Write a short response (150-300 words) covering:
+  - What's your goal? Data theft? Chaos? Money? Revenge?
+  - What's your entry point? Guest WiFi? Phishing email? Compromised vendor? Physical access?
+  - What's your path from entry to goal? Step by step, how do you get there?
+  - What might stop you along the way? What defenses could block your attack?
+      - Be specific. Don't just say "I'd hack the system." Describe how.
+
+Plan an attack PDF 
 
