@@ -397,3 +397,93 @@ High → very bad, manageable
 Critical → disaster-level
 
 Threat Model PDF
+
+Dashboard Authentication- Single-factor? Multi-factor? - Critical
+Device Communication - Encrypted? Certificate-based? - Critical
+Access Controls- Who can do what? - High
+Logging & Audit- Can we prove who did what? - High
+Rate Limiting - Can the system handle attack traffic? - Medium
+Monitoring & Alerting - Will we know if something's wrong? - Medium
+
+Overall for week 1: 
+
+If your project had a highlight reel what would it be on: 
+- This project analyzed the HYDROLOGIC water system dashboard at The Grand Marina, showing how a single failure could cause millions in damage. I mapped how water data flows from devices to the cloud and dashboard, then to shutoff valves, and identified specific attacker paths using STRIDE. Critical risks included stolen credentials, firmware tampering, and denial-of-service attacks, all with real-world operational impact. Finally, I proposed actionable mitigations like MFA, signed firmware updates, and strict role-based access, making the system safer without overcomplicating operations
+
+What skills have been leveled up? 
+- This project leveled up my ability to think like an attacker, spotting how someone could exploit the system instead of just defending it. I strengthened my skills in threat modeling, risk prioritization, and designing concrete mitigations like MFA and signed firmware updates. It also helped me explain complex technical risks clearly to non-technical stakeholders while giving engineers actionable steps.
+
+What was teh hardest part to overcome? 
+- The hardest part was thinking offensively instead of defensively, really putting myself in an attacker’s shoes and imagining exactly how they would exploit the system. It took effort to push past the instinct to just “protect” the dashboard and instead break it down step by step, from entry points to real-world impact, while keeping the scenarios realistic. Balancing that with clear explanations for a non-technical audience made it even more challenging.
+
+Quick recap!
+1. What I Analyzed
+The cloud dashboard for HYDROLOGIC water devices at The Grand Marina (500-room hotel).
+Devices: Main Building, Pool/Spa, Kitchen/Laundry.
+Controls water flow, monitors leaks, and can remotely shut off water.
+
+2. Why Threat Modeling Matters
+This system affects real-world operations — leaks, flooding, guest safety, hotel revenue.
+Attackers could:
+Change alerts
+Shut off water
+Steal sensitive data
+Goal: spot all ways the system could be abused before it happens.
+
+3. Key Components
+HYDROLOGIC Devices: Flow monitoring & shutoff
+Cloud API / Server: Handles device communication
+Web Dashboard: Staff monitoring interface
+Remote Controls: Emergency shutoffs, gate control
+Data Types: Flow readings, alerts, configs, credentials, reports
+
+4. CIA Priorites 
+Asset	C	I	A	Why
+Devices- Low- Critical- Critical- Control water flow; tampering or downtime = major ops risk
+Dashboard- Medium- Critical- High- Changing alerts or shutoffs = big problem
+Cloud API- Medium- Critical- Critical- Commands pass through here; must work and be correct
+Remote Controls- Low- Critical- Critical- Directly shuts off water; safety risk
+Consumption Data- High- High- Medium- Sensitive billing & reporting info
+
+5. STRIDE Threats (Simplified)
+Devices: spoofing, tampering, DoS, privilege escalation → could stop water flow or flood hotel.
+Dashboard: phishing, tampering, DoS → could steal credentials or change alerts.
+Cloud API: spoofing, tampering, DoS → fake data, block commands.
+Remote Controls: spoofing, tampering → could open/close valves without authorization.
+Tip: Always think how would I actually do this, not just “someone could hack it.”
+
+6. Risk Summary
+Critical: firmware/device takeovers, dashboard/API compromise, DoS → operational shutdown, flooding.
+High: phishing, API key exposure, privilege escalation → unauthorized access/control.
+Medium: weak logs, info leaks → harder to investigate, minor privacy issues.
+
+7. Mitigations
+MFA + strict roles for dashboard/API — Low — config change
+Signed firmware updates for devices — Medium — firmware update
+Rate limits / monitoring for DoS — Medium — config + monitoring setup
+Staff phishing training — Low — training + email filters
+Encrypt/rotate API keys — Medium — config + rotation
+Audit roles regularly — Low — periodic audits
+
+integrity = accuracy 
+confidentiality = keeps data a secret 
+availibility= systems works when need it to 
+
+S – Spoofing
+Pretending to be someone or something else.
+Example: An attacker pretends to be a HYDROLOGIC device or staff member to send fake commands.
+T – Tampering
+Changing data, commands, or firmware.
+Example: Modifying device firmware so leaks aren’t detected or valves fail.
+R – Repudiation
+The system can’t prove who did what.
+Example: Logs are weak, so if someone shuts off water, you can’t trace who did it.
+I – Information Disclosure
+Data is exposed to the wrong people.
+Example: Attacker downloads billing data or device settings without permission.
+D – Denial of Service
+Making something unavailable.
+Example: Flooding the dashboard or API so staff can’t monitor leaks.
+E – Elevation of Privilege
+A low-level account or key gets more access than it should.
+Example: A staff account gets admin access and can control all devices.
