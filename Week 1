@@ -316,3 +316,84 @@ Think like an attacker:
 
 Plan an attack PDF 
 
+Did this task change how you think about The Grand Marina's security? What surprised you?
+  - Yes, this task changed how I think about The Grand Marina’s security. I used to focus mostly on protecting major systems like payments and guest data, but now I see how much the initial entry point matters. What surprised me most is how something simple like a phishing email could realistically lead to a much bigger breach. It made me realize that small weaknesses and human error can be more dangerous than complex technical attacks.
+
+
+Spoofing
+Can they pretend to be someone else?
+Authentication
+
+Tampering
+Can they modify data or code?
+Integrity
+
+Repudiation
+Can they deny their actions?
+Non-repudiation
+
+Information Disclosure
+Can they see data they shouldn't?
+Confidentiality
+ 
+Denial of Service
+Can they make the system unavailable?
+Availability
+
+Elevation of Privilege
+Can they gain unauthorized permissions?
+Authorization
+
+HYDROLOGIC Devices- Three physical units at the hotel (Main Building, Pool/Spa, Kitchen/Laundry)
+MQTT Broker- Routes messages between devices and cloud
+Cloud Server- Stores data, runs analytics, hosts API
+Dashboard- Web interface for operators
+Operators- Human users who monitor and control the system
+
+A threat model is a document that captures your security analysis. It's how security professionals communicate risks to stakeholders — technical teams, management, and clients like Marcus Webb.
+
+A good threat model answers three questions:
+What are we protecting? (Assets and data flows)
+What could go wrong? (Threats, analyzed systematically)
+What should we do about it? (Prioritized mitigations)
+ 
+1. System Description
+Brief overview of what you're protecting
+2. Data Flow Diagram
+Visual representation of how data moves through the system
+3. Asset Inventory
+List of components and their importance
+4. STRIDE Analysis
+For each asset, analyze each threat category
+5. Risk Assessment
+Prioritize threats by likelihood and impact
+6. Mitigation Recommendations
+Proposed defenses for high-priority threats
+
+A threat model answers three questions: What are we protecting? What could go wrong? What should we do about it?
+Risk = Likelihood × Impact — prioritize Critical and High risks first, Medium next, Low when you have time
+The STRIDE process: list all components, ask six questions for each, rate likelihood and impact, calculate risk, propose mitigations
+
+A good threat model:
+Explains risks in language stakeholders understand
+Prioritizes threats so teams know where to focus
+Recommends specific, actionable mitigations
+Serves as a reference document for future security decisions
+
+
+| **C – Confidentiality** | Keep info private; only the right people can see it     | Sensitive data               | Billing info, staff credentials, API keys              |
+| **I – Integrity**       | Make sure info/system can’t be changed or tampered with | Correctness of data/commands | Water shutoff commands, leak alerts                    |
+| **A – Availability**    | System works when needed; nothing is blocking access    | Continuous operation         | Dashboard access, device monitoring, emergency shutoff |
+
+High	Serious impact, bad but manageable; might cause major disruption or financial loss	Alert thresholds changed → leaks missed temporarily
+
+Critical	Catastrophic; could break the system, threaten safety, or cause huge financial loss	Firmware hack or full device takeover → floods or shuts down hotel
+
+
+C → secrecy
+I → accuracy/trustworthiness
+A → system works when needed
+High → very bad, manageable
+Critical → disaster-level
+
+Threat Model PDF
