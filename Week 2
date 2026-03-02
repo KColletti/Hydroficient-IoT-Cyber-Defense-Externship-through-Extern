@@ -70,3 +70,100 @@ today = datetime.date.today()  # Get today's date
 days_until_event = (event_date - today).days
 
 print(f"There are {days_until_event} days left until the event.")
+
+Python has four non-primitive inbuilt data structures:
+Lists, 
+Dictionary, 
+Tuple and 
+Set. 
+
+list Key Features:
+Ordered: The items in a list have a specific order. This means that the first item you add will be the first item in the list, the second item will be second, and so on.
+Mutable: You can change the contents of a list after it's created. This means you can add, remove, or modify items as needed.
+Heterogeneous: A list can hold different types of data. For example, you can have numbers, strings, and even other lists all in one list.
+- used for easy organization, felxible and accessible
+# Creating a list of fruits
+fruits = ["apple", "banana", "cherry"]
+
+# Adding an item
+fruits.append("orange")  # Now the list is ["apple", "banana", "cherry", "orange"]
+# Removing an item
+fruits.remove("banana")  # Now the list is ["apple", "cherry", "orange"]
+# Accessing an item
+print(fruits[0])  # This will print "apple”
+
+
+Key Features of a Tuple:
+Ordered: Like a list, a tuple also keeps items in a specific order.
+Immutable: Unlike a list, you can’t change the contents of a tuple after it’s created. No adding, removing, or rearranging.
+Heterogeneous: Just like lists, tuples can store different types of data—numbers, strings, even other lists or tuples.
+# Creating a tuple of fruits
+fruits_tuple = ("apple", "banana", "cherry")
+# Accessing an item
+print(fruits_tuple[0])  # This will print "apple"
+# Trying to change a value (this will raise an error because tuples are immutable)
+# fruits_tuple[1] = "orange"
+
+Why Use Tuples?
+Data Integrity: Since you can't change a tuple once it's created, it’s perfect for storing fixed sets of data, like coordinates (latitude, longitude) or days of the week.
+Performance: Tuples are generally faster than lists, making them ideal for situations where you don’t need to modify the data.
+Protection: While lists are flexible and allow for changes, tuples are rigid but offer protection and performance. 
+Lists and Tuples Together: Think of using a list and a tuple as a powerful combination.
+
+Key Features of a Set:
+Unordered: There’s no particular order to how items are stored or retrieved in a set.
+Unique Items: Sets automatically remove duplicates, so you’ll never have the same item twice.
+Mutable: While sets are unordered, you can still add or remove items from them after they’re created.
+Immutable items: Items of a set in python are immutable (unchangeable) which means that A set can have any number of items and they may be of different types (integer, float, tuple, string, etc.). But a set cannot have mutable elements like lists, sets or dictionaries as its elements.
+
+
+# Creating a set of grocery items
+grocery_set = {"apples", "bananas", "milk"}
+
+# Adding an item
+grocery_set.add("bread")  # Now the set is {"apples", "bananas", "milk", "bread"}
+
+# Removing an item
+grocery_set.remove("bananas")  # Now the set is {"apples", "milk", "bread"}
+
+# Trying to add a duplicate item (it won’t be added)
+grocery_set.add("milk")  # Set remains {"apples", "milk", "bread"}
+
+# Accessing items in a set (sets don’t have indexes)
+for item in grocery_set:
+    print(item)  # This will print the items, but in any order
+
+Why Use Sets?
+Unique Elements: Sets ensure that you don’t have duplicates, making them ideal for tasks like tracking unique users or filtering out repeated values.
+Faster Lookups: Sets are optimized for quick membership tests—checking whether an item exists is typically faster than with lists or tuples.
+Unordered Collections: When you don’t care about the order but need to ensure each item is unique, sets are the way to go.
+
+Key Features of a Dictionary:
+Key-Value Pairs: Each item in a dictionary has a key (the item name) and a value (the quantity).
+Mutable: You can add, remove, or change items in the dictionary after it’s created.
+No Duplicates for Keys: Each key must be unique. If you try to add a duplicate key, the new value will replace the old one.
+Unordered: Like sets, dictionaries don’t store data in a specific order.
+ 
+# Initial dictionary with grocery items and their quantities
+grocery_list = {"apples": 4, "bananas": 6, "milk": 2}
+
+# Adding a new item to the dictionary
+grocery_list["bread"] = 1
+print(f"Updated list after adding bread: {grocery_list}")
+
+# Updating the quantity of an existing item (bananas)
+grocery_list["bananas"] = 8
+print(f"Updated list after changing banana quantity: {grocery_list}")
+
+# Removing an item from the dictionary (milk)
+grocery_list.pop("milk")
+print(f"Updated list after removing milk: {grocery_list}")
+
+# Accessing the quantity of a specific item (apples)
+print(f"Number of apples: {grocery_list['apples']}")
+
+Why Use Dictionaries?
+Organized Data: You can store related data (like items and their quantities) in one place, making it easy to manage.
+Fast Lookup: If you need to find out how many bananas you need, you can quickly access the value by looking up the key.
+Flexibility: You can add, change, or remove items and quantities as your needs change, just like updating your shopping list as you move through the store.
+
