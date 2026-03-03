@@ -183,3 +183,39 @@ While Loop -> Loop -> Repeat while condition is true
 Break -> Jump -> Exit loop immediately 
 Continue -> Jump -> Skip to next iteration
 Pass-> Jump-> Do nothing (placeholder)
+
+Control Flow in Python: 
+https://colab.research.google.com/drive/1Tnt8v7ExfEEFG9tvaeJ3rsjVTa12h2U_?usp=sharing 
+
+Four Types of Functions
+- Nothing goes in, nothing comes out
+def clear_notifications():
+# Clear daily notifications from the dashboard
+notifications.clear()
+print("Notifications cleared!")
+
+- Nothing goes in, something comes out
+def get_active_users():
+# Returns the number of active users currently on the site
+active_users = 1253  # In a real-world case, this would be retrieved dynamically
+return active_users
+
+- Something goes in, nothing comes 
+def process_payment(order_total):
+# Process the payment based on the order total
+print(f"Processing payment of ${order_total}...")
+# Further code would handle the transaction but wouldn’t return anything
+
+- Something goes in, something comes out
+def calculate_total(order_subtotal, shipping_fee):
+# Calculate the total order cost including shipping
+total = order_subtotal + shipping_fee
+return total
+
+Quick Recap:
+Functions are reusable code blocks that perform specific tasks—like Amazon teams handling payments or shipping.
+There are four types based on input/output: nothing in/out, input only, output only, and both input and output.
+Functions work with data structures (storage) and control flow (logic) to create efficient, organized programs.
+
+Defining Functions in Python 
+https://colab.research.google.com/drive/1K9olmvGLomu3m_yiBGJTW9fgHRJueCGS?usp=sharing
