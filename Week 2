@@ -167,3 +167,19 @@ Organized Data: You can store related data (like items and their quantities) in 
 Fast Lookup: If you need to find out how many bananas you need, you can quickly access the value by looking up the key.
 Flexibility: You can add, change, or remove items and quantities as your needs change, just like updating your shopping list as you move through the store.
 
+Data Structures in Python
+https://colab.research.google.com/drive/1XAe5PSe5OmPCzAiU7zY2QQ-RrZ5Yohx2?usp=sharing 
+
+
+Control flow in Python refers to the order in which the statements or instructions in a program are executed
+
+Structure-> Type-> What It Does
+Sequential-> — -> Execute code line by line
+If -> Conditional -> Execute if condition is true
+If-Else-> Conditional -> Choose between two paths
+If-Elif-Else ->Conditional -> Choose between multiple paths
+For Loop -> Loop -> Iterate over a known sequence
+While Loop -> Loop -> Repeat while condition is true 
+Break -> Jump -> Exit loop immediately 
+Continue -> Jump -> Skip to next iteration
+Pass-> Jump-> Do nothing (placeholder)
