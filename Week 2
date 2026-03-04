@@ -219,3 +219,35 @@ Functions work with data structures (storage) and control flow (logic) to create
 
 Defining Functions in Python 
 https://colab.research.google.com/drive/1K9olmvGLomu3m_yiBGJTW9fgHRJueCGS?usp=sharing
+
+Intro to Python Assignmnet 
+https://colab.research.google.com/drive/1DJ_0dGd-sF-WghZO5-GvYJzWZcPfXhdq?usp=sharing
+
+Directory= data structure 
+check each reading from anomalies= control flow 
+check multiple places= function 
+
+# DATA STRUCTURE: List of sensor readings (dictionaries)
+sensor_data = [
+    {"device_id": "GM-HYDROLOGIC-01", "flow_rate": 41.2},
+    {"device_id": "GM-HYDROLOGIC-02", "flow_rate": 95.2},
+    {"device_id": "GM-HYDROLOGIC-03", "flow_rate": 42.0},
+]
+
+# FUNCTION: Reusable leak detection
+def is_leak(flow_rate):
+    return flow_rate > 80
+
+# CONTROL FLOW: Loop through and make decisions
+for reading in sensor_data:
+    device = reading["device_id"]
+    flow = reading["flow_rate"]
+
+    if is_leak(flow):
+        print(f"⚠️ {device}: Leak detected!")
+    else:
+        print(f"✓ {device}: Normal")
+
+✓ GM-HYDROLOGIC-01: Normal
+⚠️ GM-HYDROLOGIC-02: Leak detected!
+✓ GM-HYDROLOGIC-03: Normal
