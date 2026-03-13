@@ -265,3 +265,9 @@ Splitting → Divide into training & test sets for machine learning.
 Structured Data (like spreadsheets, CSVs, databases) follows a fixed format (rows & columns).
 
 Semi-structured Data (like JSON files, tabular PDFs) requires extra steps like handling formatting inconsistencies and dealing with missing data before analysis.
+
+What are the first three steps you would take to clean and organize this data?
+
+Handle missing values – Flag readings with missing timestamps or pressure values. Decide whether to drop them or interpolate.
+Remove duplicates – Identify and drop repeated sensor messages (common with network retries).
+Standardize timestamp formats – Convert all timestamps to ISO format (YYYY-MM-DDTHH:MM:SSZ).
