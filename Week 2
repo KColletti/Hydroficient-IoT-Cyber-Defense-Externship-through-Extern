@@ -251,3 +251,13 @@ for reading in sensor_data:
 ✓ GM-HYDROLOGIC-01: Normal
 ⚠️ GM-HYDROLOGIC-02: Leak detected!
 ✓ GM-HYDROLOGIC-03: Normal
+
+
+Why Data Preparation?
+Just like prepping ingredients before cooking, data must be cleaned, structured, and formatted for AI models to work accurately.
+Messy data = inaccurate results.
+Key Data Preparation Steps
+Cleaning → Fix missing values, duplicates, and errors.
+Transforming → Convert text, standardize formats.
+Integration → Merge multiple datasets into a usable structure.
+Splitting → Divide into training & test sets for machine learning.
