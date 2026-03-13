@@ -261,3 +261,7 @@ Cleaning → Fix missing values, duplicates, and errors.
 Transforming → Convert text, standardize formats.
 Integration → Merge multiple datasets into a usable structure.
 Splitting → Divide into training & test sets for machine learning.
+
+Structured Data (like spreadsheets, CSVs, databases) follows a fixed format (rows & columns).
+
+Semi-structured Data (like JSON files, tabular PDFs) requires extra steps like handling formatting inconsistencies and dealing with missing data before analysis.
