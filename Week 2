@@ -271,3 +271,228 @@ What are the first three steps you would take to clean and organize this data?
 Handle missing values – Flag readings with missing timestamps or pressure values. Decide whether to drop them or interpolate.
 Remove duplicates – Identify and drop repeated sensor messages (common with network retries).
 Standardize timestamp formats – Convert all timestamps to ISO format (YYYY-MM-DDTHH:MM:SSZ).
+
+Quick Recap: 
+What is Pandas?
+A Python library for handling and analyzing structured data. Works like Excel but more powerful for large datasets.
+Key Concepts in Pandas
+DataFrame → A table (like an Excel sheet).
+Series → A single column from a DataFrame.
+CSV → A common format for storing tabular data.
+Basic Pandas Operations in Google Colab
+Import Pandas → import pandas as pd
+Read CSV → df = pd.read_csv("file.csv")
+Check Data → df.head(), df.info(), df.describe()
+Filter Data → df[df['Age'] > 30]
+Sort Data → df.sort_values(by='Age')
+Handle Missing Values → df.fillna(value), df.dropna()
+
+Quick Recap: Cleaning Data with Pandas
+Why Clean Data?
+Raw data is often messy (missing values, duplicates, wrong formats).
+Clean data = accurate analysis & better AI performance.
+Steps for Data Cleaning
+Load Data → Import CSV from local storage or URL using pd.read_csv().
+Inspect Data → Use df.head(), df.info(), df.describe() to check the structure.
+Handle Missing Values → Use df.fillna() to replace or df.dropna() to remove.
+Remove Duplicates → Identify with df.duplicated() & remove using df.drop_duplicates().
+Fix Inconsistencies → Convert data types with astype().
+
+Key Pandas Functions: Explore essential Pandas functions like groupby(), merge(), and concat(), which are invaluable for aggregating and combining data from multiple sources or splitting the data into subsets for detailed analysis.
+Data Cleaning: Clean the dataset by handling missing values, removing duplicate entries, and correcting data types as needed to prepare the data for analysis.
+Data Inspection: Use commands like df.head(), df.describe(), and df.info() to examine and understand the structure, common statistics, and data types in the dataset.
+Data Importing: Load the Car Prices dataset into a Pandas DataFrame. This step will introduce you to Pandas' powerful data reading capabilities, which support a variety of file formats including CSV, Excel, JSON, and more.
+
+df.head() shows the first five rows of the dataset, giving you a quick look at the data.
+df.info() provides details about the DataFrame, including the number of non-null entries, data types, and memory usage, which are helpful for assessing the data's quality and structure.
+
+Loan Data Cleaning- 
+Importing Libraries: We started by importing pandas, which is essential for working with DataFrames in Python.
+
+Loading the Dataset: We loaded your bank_loan.csv file into a pandas DataFrame named df. This is the first step to make your data accessible for analysis.
+
+Initial Data Inspection: We used df.head() to view the first few rows of the DataFrame, giving us a quick look at the data's structure and content. We also used df.info() to get a summary of the DataFrame, including column names, non-null counts, and data types. This helped us identify potential issues like incorrect data types (CCAvg as object).
+
+Handling Missing Values: We checked for missing values across all columns using df.isnull(). The good news is that your dataset had no missing values, so no imputation or row/column removal was necessary for this aspect. This ensured the dataset's completeness.
+
+Checking for Duplicates: We identified if there were any duplicate rows in the DataFrame using df.duplicated(). We found no duplicates, so df.drop_duplicates() was executed but resulted in no changes, confirming data uniqueness.
+
+Correcting 'CCAvg' Data Type: We discovered that the 'CCAvg' column was stored as an object (string) type instead of a numeric type. Upon closer inspection, we saw that numerical values were represented with a / (e.g., '1/60'). To make this column suitable for numerical analysis, we converted it to float by replacing the / with a . and then casting the entire column to the float data type.
+
+Addressing Code Inconsistencies: During the process, we fixed code that attempted to reference a non-existent 'Year' column and removed a misleading print statement to ensure the code accurately reflects the DataFrame's state.
+
+Common uses of JSON 
+- API and web services 
+- configuration files 
+- databases 
+- machine learning pipes 
+
+The main difference between a Python dictionary and JSON is that:
+A Python dictionary is like a real box with labels that only Python understands.
+JSON is like a written list of what’s inside the box that anyone (including websites, apps, and other programs) can read.
+- JSON is a string (text format), while Python dictionaries are objects.
+
+Data Type
+- String (text-based)
+- Dictionary (Python object)
+
+Format
+- Uses "" for keys
+- Uses "" or '' for keys
+
+Data Handling
+- Needs conversion before Python can use it
+- Readable and editable directly
+
+Example
+{"name": "Alice", "age": 25} (stored as text)
+{"name": "Alice", "age": 25} (usable in Python)
+
+Working with JSON in Python
+Convert JSON string to Python dict → json.loads(json_str)
+Read JSON from a file → json.load(file)
+Write Python dict to JSON file → json.dump(data, file, indent=4)
+Convert Python dict to JSON string → json.dumps(data, indent=4)
+ 
+Memory trick:
+The "s" in loads and dumps stands for "string"
+Without the "s" = working with files
+
+Step 1: Accessing Nested JSON Data
+- Use list indexing ([1]) to access elements inside a JSON list.
+- Use dictionary keys (["orders"]) to navigate the structure.
+- Always print data.keys() first to see what’s inside!
+
+Step 2: Flattening Nested JSON
+- convert nested JSON into a flat table-like structure
+
+Reading JSON into Pandas
+Instead of manually parsing JSON, Pandas has a built-in function pd.read_json() that automatically loads JSON data into a DataFrame
+    - JSON is loaded directly into a DataFrame—no need for manual conversion. You can now filter, analyze, and visualize the data just like a CSV file.
+        useful - IoT platforms can load sensor data stored in JSON for easy processing.
+                Device readings, timestamps, and status information can be quickly analyzed in a structured way.
+                Data can be filtered to identify trends, such as pressure changes or flow rate anomalies.
+
+If JSON data is nested, Pandas won’t automatically flatten it. You need to normalize it.
+    - json_normalize() is super useful for handling API responses, logs, or NoSQL databases.
+
+Once you clean or analyze your data, you might want to save it back as JSON.
+ 
+Example: Convert a DataFrame to JSON
+
+Quick Recap: Handling Nested JSON in Python & Pandas
+What is Nested JSON?
+JSON inside JSON (like a folder inside another folder).
+Extracting Data from Nested JSON
+Use Python’s json.loads() to convert JSON strings into dictionaries.
+Navigate using dictionary keys (data["orders"]) & list indexing ([1]).
+Flattening JSON for Analysis
+Convert nested JSON into a flat DataFrame using pd.DataFrame().
+Use json_normalize() to extract deeper nested structures.
+Working with JSON in Pandas
+Read JSON file → pd.read_json("file.json").
+Flatten nested JSON → json_normalize(data, record_path=['nested_key']).
+Convert DataFrame back to JSON → df.to_json("file.json", orient="records").
+
+
+Build a Mock Sensor 
+- IoT sensors work the same way. Every message a sensor sends needs:
+A timestamp — when it was sent
+A counter — which number in the sequence it is
+    = most common threat is a replay attack (hacker resends same attack since we dont know when it was sent if it doenst have a timestamp with it)
+
+ISO 8601 = combination of human readable and uniz time stamp -> 2024-01-15T14:30:45Z (UTC = central time zone) 
+
+A counter (or sequence number) is simply a number that increases by 1 with each message.
+
+
+Counter Value- 
+Expected: 42, Got: 42
+✅ Message is valid
+Expected: 42, Got: 41
+⚠️ Duplicate/replayed message
+Expected: 42, Got: 44
+⚠️ Messages 42-43 are missing
+Expected: 42, Got: 100
+🚨 Something very wrong
+
+Timestamps + Counters = Double Protection
+Timestamps tell you when a message was created
+Counters tell you which message it is in the sequence
+Together, they make replay attacks much harder to execute!
+
+device_id
+- Identifies which sensor sent this
+timestamp
+- When the reading was taken (UTC)
+counter
+- Sequence number for replay detection
+pressure_upstream
+- Actual sensor data
+pressure_downstream
+- Actual sensor data
+flow_rate
+- Actual sensor data
+
+Mock data allows us to test our code without expensive hardware, experiment safley without affecting real systems, create edge cases (like leaks or attacks) that rarley happwn within real life, learn patterns in data before working with production systems. 
+
+Pressure Upstream
+- Water pressure before the valve
+- 75-90
+- PSI
+Pressure Downstream
+- Water pressure after the valve
+- 40 - 60
+- PSI
+Flow Rate
+- How fast water is flowing
+- 30-50
+- gallons/min
+
+Upstream high, downstream low → Possible blockage
+Both pressures nearly equal → Valve might be fully open
+Both pressures dropping → Supply issue or major leak
+
+random.uniform(a, b) → Random float between a and b
+random.randint(a, b) → Random integer between a and b
+random.choice(list) → Pick one item from a list
+random.gauss(mean, std) → Random number with normal distribution
+
+
+Sequence A:
+Flow: 41.2 → 38.9 → 42.1 → 40.3 → 39.7
+Sequence B:
+Flow: 41.2 → 33.5 → 49.8 → 31.2 → 47.6
+ - 
+Sequence A is realistic — values drift gradually around a baseline.
+Sequence B jumps wildly between readings — this would only happen if there was a serious malfunction (or if someone used Method 1!).
+
+__init__
+- Sets up device ID, counter, base values
+- Each sensor has its own identity and state
+counter
+- Increments with every reading
+- Enables replay attack detection
+timestamp
+- Records when reading was generated
+- Proves message freshness
+base values + variation
+- Creates realistic drift
+- Makes data look authentic
+get_leak_reading()
+- Simulates high flow
+- Tests leak detection
+get_blockage_reading()
+- Simulates pressure differential
+- Tests blockage detection
+get_stuck_reading()
+- Simulates sensor malfunction
+- Tests stuck sensor detection
+
+Anomalies for Testing
+Leak: High flow rate (80-120)
+Blockage: Big pressure difference
+Stuck sensor: Identical values
+Save to JSON
+Use json.dump() to save readings
+Include mix of normal + anomaly data
