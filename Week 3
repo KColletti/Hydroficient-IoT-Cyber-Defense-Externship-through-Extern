@@ -1,0 +1,37 @@
+1. Security Foundations  →  What could go wrong?
+2. Building Your Sensor  →  How do we generate data?
+3. The Pipeline          →  How does data actually flow?
+
+ MQTT (Message Queue Telemetry Transport) is a lightweight messaging protocol designed for devices that need to send small amounts of data frequently and reliably.
+Think about The Grand Marina's water system:
+Each HYDROLOGIC device sends a reading every few seconds
+That's thousands of messages per day from just three devices
+Each message is tiny — maybe 200 bytes
+But every single one matters
+Traditional web protocols like HTTP are designed for large, occasional requests — loading a web page, downloading a file. They're like sending a moving truck when you need to deliver a letter.
+MQTT is designed for exactly the opposite: constant, small, critical messages. It's like having a dedicated courier who knows the fastest route and never takes a break.
+
+MQTT is a lightweight protocol designed for IoT messaging
+The publish/subscribe pattern decouples senders from receivers
+MQTT is push-based, efficient, and perfect for real-time IoT data
+
+
+Company → hydroficient
+Property → grandmarina
+Category → sensors, commands, alerts
+Location → main-building, pool-wing, kitchen
+hydroficient/grandmarina/sensors/main-building
+hydroficient/grandmarina/sensors/pool-wing
+hydroficient/grandmarina/commands/shutoff
+
+client.publish("hydroficient/grandmarina/sensors/main-building", sensor_data)
+client.subscribe("hydroficient/grandmarina/sensors/main-building")
+
+Quick Recap
+
+Topics use hierarchical paths (company/property/category/device)
+Wildcards: + matches one level, # matches all remaining levels
+QoS levels: 0 (fire and forget), 1 (at least once), 2 (exactly once)
+Choose QoS based on message importance and tolerance for loss/duplicates
+
+Map The Grand MArina MQTT Topics PDF
