@@ -35,3 +35,33 @@ QoS levels: 0 (fire and forget), 1 (at least once), 2 (exactly once)
 Choose QoS based on message importance and tolerance for loss/duplicates
 
 Map The Grand MArina MQTT Topics PDF
+
+[Publisher] -----> [Broker] -----> [Subscriber]
+   (Sensor)       (Mosquitto)      (Dashboard)
+
+Mosquitto = router
+
+Port
+- 1883
+- Standard unencrypted MQTT port
+Authentication
+- None
+- Anyone can connect
+Encryption
+- None
+- All traffic is plaintext
+Anonymous access
+- Allowed
+- No username/password required
+move file to python: mv hello_test.py.rtf hello_test.py
+textutil -convert txt hello_test.py -output hello_test.py
+
+
+Write your code in a .py file (using Notepad on Windows or TextEdit on Mac)
+Save it in your hydroficient-project folder
+Open your terminal (Anaconda Prompt on Windows, Terminal on Mac/Linux)
+Navigate to your folder: cd path/to/hydroficient-project
+Run it: python your_script.py
+Stop it: Press Ctrl+C when you're done
+ 
+Pro tip: If you already navigated to your project folder in one terminal session, you don't need to cd again — you're already there. But if you open a new terminal window, you'll need to cd again.
