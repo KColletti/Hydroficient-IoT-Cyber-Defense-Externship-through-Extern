@@ -65,3 +65,39 @@ Run it: python your_script.py
 Stop it: Press Ctrl+C when you're done
  
 Pro tip: If you already navigated to your project folder in one terminal session, you don't need to cd again — you're already there. But if you open a new terminal window, you'll need to cd again.
+
+mqtt.Client(...)
+- Creates a new MQTT client
+client.connect()
+- Connects to the broker
+json.dumps(message)
+- Converts the dictionary to a JSON string
+client.publish()
+- Sends the message to the specified topic
+
+on_message
+- Function called when a message arrives
+msg.topic
+- The topic the message was published to
+msg.payload
+- The raw message bytes
+msg.payload.decode()
+- Convert bytes to string
+client.subscribe()
+- Register interest in topics
+client.loop_forever()
+- Run forever, processing messages
+
+
+Sensor Data Types 
+Sensor Readings = regular data 
+Alerts= poblems detected 
+Commands= shutoff requests 
+Status updates= device heartbeats 
+MQTT Data Flow 
+WaterSensorMQTT - publish -> Mosquitto (broker) - subscribe -> Dashboard (alerts 
+A dashboard subscriber receives and displays sensor data in real-time
+display_reading() formats raw JSON into human-readable output
+Threshold checking adds basic alerts for anomalies (high flow, low pressure)
+Topic-based routing handles different message types (sensors, alerts, commands)
+The complete pipeline: Sensors → Broker → Dashboard
