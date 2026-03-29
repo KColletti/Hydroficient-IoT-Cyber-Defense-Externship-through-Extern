@@ -101,3 +101,5 @@ display_reading() formats raw JSON into human-readable output
 Threshold checking adds basic alerts for anomalies (high flow, low pressure)
 Topic-based routing handles different message types (sensors, alerts, commands)
 The complete pipeline: Sensors → Broker → Dashboard
+
+Build an Insecure Pipeline PDF
