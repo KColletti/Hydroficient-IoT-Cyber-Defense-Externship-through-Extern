@@ -103,3 +103,55 @@ Topic-based routing handles different message types (sensors, alerts, commands)
 The complete pipeline: Sensors → Broker → Dashboard
 
 Build an Insecure Pipeline PDF
+
+current system issues: 
+No Authentication
+Anyone can connect. No username. No password.
+No Encryption
+Messages travel in plain text. Anyone can read them.
+No Authorization
+Connected clients can publish or subscribe to any topic. There are no rules about who can access what — a guest could read sensor data meant for operations, or send commands meant only for administrators.
+Default Port
+Port 1883 is the standard MQTT port. Attackers know to check it.
+
+mosquitto_sub -t "#" -v 
+- intercepts all info 
+
+
+Every sensor reading
+- Pressure, flow rate, timestamps
+- Medium
+Device IDs
+- GM-HYDROLOGIC-01, GM-HYDROLOGIC-02, GM-HYDROLOGIC-03
+- Medium
+Locations
+- main-building, pool-wing, kitchen
+- Medium
+Topic structure
+- hydroficient/grandmarina/sensors/<location>/readings
+- Medium
+Message patterns
+- One reading every 2 seconds
+- High
+Counter values
+- Sequential numbers: 1, 2, 3...
+- High
+Timestamps
+- Exact times of readings
+- High
+ = they can figure out how the whole system is organized 
+
+No encryption
+- Eavesdropping
+- Learn patterns, plan attacks
+No authentication
+- Unauthorized connections
+- Anyone can connect to the broker
+No authorization
+- Topic access
+- Subscribe to any topic, publish to any topic
+No message integrity
+- Injection/replay
+- Fake commands, replayed messages
+
+Vulnerability Assessment PDF
