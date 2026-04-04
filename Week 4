@@ -1,0 +1,180 @@
+Encyrption!!
+
+TLS- Transport Layer Security 
+
+Sensor locations
+- Topic names like grandmarina/pool_spa/
+- Maps your infrastructure
+Occupancy patterns
+- Flow rate spikes = rooms in use
+- Privacy violation, burglary planning
+System vulnerabilities
+- Normal pressure ranges
+- Knows what "abnormal" looks like
+Message timing
+- When sensors report
+- Can plan attacks for quiet periods
+reconnaissance — gathering information about a target before launching a real attack. (most times impossible to detect since attacker most times is just receiving) 
+
+AES (Advanced Encryption Standard) is a symmetric encryption algorithm used to lock data, while TLS (Transport Layer Security) is a protocol that manages the secure connection, authentication, and key exchange over a network.
+
+HTTP 
+SSL (TLS) - put encryption layer between to encrypt the info (encyrpts the connection) = sits between applicaition and network 
+TCP order of packet 
+IP destinaton of packet (encyrpt isnt full end to end) 
+Ethernet close proximatey hardware 
+  - Authentication will have a public key and needs to be robust, fast (TLS gotten popular for communicating to the server) 
+
+Messages readable by anyone on the network
+- Messages encrypted — only sender and receiver can read them
+No verification of who you're talking to
+- Certificates prove the broker is legitimate
+Attacker can easily eavesdrop
+- Eavesdropper sees only encrypted garbage
+
+Need encyrption AND authentication (to see the whole thing and ensure the correct people are in) 
+
+MQTT
+- 1883
+- None
+MQTTS (secure such like HTTPS instead of HTTP) 
+- 8883
+- TLS
+
+So with encyrption right now even if someone intercepts the traffic, they wont be able to easily read it 
+
+Only encyrption isnt enough alone it needs ti have certificates 
+
+Person in the middle attack= fake broker in the middle decyrpting data 
+
+Subject
+- Who this certificate belongs to
+- localhost or broker.grandmarina.com
+Issuer
+- Who vouches for this identity
+- Grand Marina Root CA
+Public Key
+- Used for encryption
+- (A long string of characters)
+Valid From/To
+- When the certificate is valid
+- 2024-01-01 to 2025-01-01
+Signature
+- Cryptographic proof the issuer approved this
+- (Digital signature)
+
+A Certificate Authority (CA) is the trusted entity that signs certificates. (passport to the digital world) 
+
+Trusted by browsers globally
+- Trusted only by your systems
+Requires domain verification
+- You control everything
+Free or paid
+- Free
+Good for public websites
+- Good for internal systems
+
+ca.pem
+- CA certificate (public)
+- Everyone (sensors, broker)
+server.pem
+- Broker's certificate (public)
+- Broker
+server-key.pem
+- Broker's private key (SECRET!)
+- Broker only
+Important: Certificates are meant to be shared — that's how trust is verified. But the private key stays locked down. If someone gets your private key, they can impersonate your broker. Game over.
+
+One Way TLS: 
+  • Broker has a certificate
+  • Clients verify the broker's identity
+  • Clients don't need their own certificates
+  • This is how most websites work — you verify the bank is real, but the bank doesn't verify you via certificate
+
+Mutual TLS
+  • Both broker and the clients have certificates
+  • Everyone verifies everyone
+  • "Only sensors with valid certificates can connect"
+
+
+
+Certificate lifetimes are getting shorter. The industry is moving toward 47-day certificates (down from 1-2 years). For our learning environment, we'll use 1-year certificates for the server and 10-year for the CA.
+
+Your CA
+ - Signs the broker's certificate, trusted by all sensors
+Broker
+ - Presents certificate to prove identity
+Sensors
+ - Verify broker's certificate before sending data
+
+Setting up TLS 
+
+one-way security — only one side proves its identity.
+two-way security — both sides prove who they are.
+
+
+The CA is self-signed (issuer = subject)
+The server certificate is signed by the CA (issuer = CA)
+Common Name must match the hostname (localhost)
+SANs allow multiple hostnames/IPs
+Private keys must be kept secret — never commit them to git!
+
+require_certificate false
+- Clients don't need certificates (one-way TLS)
+require_certificate true
+- Clients MUST have certificates (mutual TLS / mTLS)
+
+Error: Unable to open keyfile
+- Wrong path to server-key.pem
+- Check the path is relative to where you run Mosquitto
+Error: Unable to load CA certificates
+- Wrong path or corrupt ca.pem
+- Regenerate certificates
+Error: problem setting TLS options
+- Certificate/key mismatch
+- Ensure all three files were generated together
+Port already in use
+- Another Mosquitto instance running
+- Kill existing process first
+
+
+Port
+- 1883
+- 8883
+Encryption
+- None
+- TLS
+Certificate files
+- Not needed
+- Required
+Unencrypted clients
+- Can connect
+- Rejected
+Configuration complexity
+- Simple
+- Slightly more
+
+Port 8883 is the standard for MQTTS (TLS-secured MQTT)
+Three paths needed: cafile, certfile, keyfile
+require_certificate false = one-way TLS (server cert only)
+Always verify TLS is working by trying an unencrypted connection
+Paths are relative to where you run Mosquitto from
+
+1
+Import ssl module
+Python needs this library to understand TLS protocols and encryption standards
+2
+Add TLS configuration
+Tell your client where to find the CA certificate so it can verify the broker's identity
+3
+Call client.tls_set()
+Activate TLS on the connection — without this call, your client still connects in plaintext
+
+Secure the Pipline-> have mosquitto running on port 8883 (encyrpted), run subscriber_tls.py and publisher_tls.py to ultimatley see TLS- encypted messaes, and the mosquitto broker updtaing. 
+  Certs made:ca.pem – this is the certificate the client uses to check the broker is legit
+server-cert.pem – the broker’s certificate it shows to the client
+server-key.pem – the broker’s private key to encrypt messages
+Port the secure MQTT connection uses:
+8883 (the standard port for MQTT over TLS)
+What happened when I tried connecting without TLS:
+It didn’t work — I got a “protocol error” because the broker expects TLS on 8883, so unencrypted messages were rejected
