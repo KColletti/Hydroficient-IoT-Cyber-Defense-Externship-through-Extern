@@ -261,3 +261,5 @@ Week 4 Stress Test
 The stress test proves whether your TLS-secured pipeline can handle Grand Marina's real-world load
 Normal operation is 10 msg/sec; emergency mode is 50 msg/sec — both must pass with TLS on
 Record the status (SUCCESS or DEGRADED) for each rate at both TLS OFF and TLS ON
+
+Week 4 Kayla Colletti Experiment Results
