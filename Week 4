@@ -178,3 +178,72 @@ Port the secure MQTT connection uses:
 8883 (the standard port for MQTT over TLS)
 What happened when I tried connecting without TLS:
 It didn’t work — I got a “protocol error” because the broker expects TLS on 8883, so unencrypted messages were rejected
+
+
+That 'Connected successfully' message? It proves the handshake completed. It doesn't prove:
+That an eavesdropper can't read your traffic
+That invalid certificates get rejected
+That performance is acceptable
+That the system can handle real-world load
+Those are the things we need to test.
+
+Question: "Is our network firewall blocking external SSH?"
+Hypothesis: "Connections from outside will be refused"
+Experiment: Attempt SSH connection from external IP
+Observation: "Connection timed out after 30 seconds"
+Conclusion: "Firewall is correctly blocking external SSH"
+
+Penetration Testing
+- Experiment 1: Try to eavesdrop
+  - "Can we break into our own system?"
+  - "Can we spy on our own traffic?"
+Certificate Validation Testing
+- Experiment 2: Test wrong certificates
+  - "Do our systems reject invalid certs?"
+  - "What happens with expired/wrong certs?"
+Performance Impact Assessment
+- Experiment 3: Measure latency
+  - "How much does security cost us?"
+  - "How much slower is TLS?"
+Load Testing
+- Experiment 4: Stress test
+  - "Can we handle peak traffic?"
+  - "Can we handle 50+ sensors?"
+
+1: Eavesdropper
+"Could a competitor spy on our water usage patterns?"
+2: Certificates
+"What if someone sets up a fake MQTT broker?"
+3: Speed
+"Will security slow down our leak detection?"
+4: Stress
+"Can this handle all 50 sensors during peak usage?"
+
+Week 4 Eavesdropping test
+Week 4 Certificate Test 
+- Certificate validation is crucial:
+Correct certs -> Connection works
+Wrong CA -> Rejected (security working!)
+No verification -> Dangerous false success
+
+Week 4 Speed-
+
+Overhead= with TLS- without TLS/ without TLS x 100 -> measure latency ot then compare
+
+  Latency Results (TLS OFF)
+==================================================
+  Messages sent: 50
+  Average latency: 52.42 ms
+  Min latency: 0.63 ms
+  Max latency: 105.90 ms
+  Std deviation: 51.56 ms
+
+  Latency Results (TLS ON)
+==================================================
+  Messages sent: 50
+  Average latency: 52.68 ms
+  Min latency: 0.64 ms
+  Max latency: 105.69 ms
+  Std deviation: 51.59 ms
+
+(52.68 ms - 52.42 ms)/ 52.42 ms x 100%= .49% 
