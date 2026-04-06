@@ -263,3 +263,117 @@ Normal operation is 10 msg/sec; emergency mode is 50 msg/sec — both must pass 
 Record the status (SUCCESS or DEGRADED) for each rate at both TLS OFF and TLS ON
 
 Week 4 Kayla Colletti Experiment Results
+
+Analyze the results: 
+"TLS adds 6 ms latency"
+- "Security adds negligible delay — unnoticeable to users"
+"Eavesdropper saw all messages"
+- "Without TLS, anyone on the network can spy on sensor data"
+"50 msg/sec with 0% errors"
+- "System can handle emergency load without degradation"
+
+Interpreting Experiment 1: Eavesdropping
+
+What the data shows:
+- Without TLS: Sensor data visible in plain text
+- With TLS: Connection fails without certificates
+ 
+
+What this means for the hotel: Anyone on the hotel network (guests, staff, or attackers) could monitor the water system without TLS. They could learn:
+- Occupancy patterns (water usage spikes = occupied rooms)
+- System vulnerabilities (pressure ranges, timing)
+- Operational details useful for planning attacks
+
+Interpreting Experiment 2: Certificate Validation
+
+What this means for the hotel:
+
+The TLS implementation automatically rejects invalid certificates. This prevents:
+- Attackers with fake certificates from impersonating the broker
+- "Person-in-the-Middle" attacks where someone intercepts traffic
+- Connections to rogue or unauthorized systems
+
+The dangerous scenario: When certificate verification is disabled (Scenario C), the connection "succeeds" — but this is actually a security failure. The client would connect to ANY server, including an attacker's fake broker. This is why ssl.CERT_REQUIRED is essential in production.
+
+The bottom line: Certificate validation provides automatic protection against impersonation attacks. The system fails securely when something is wrong.
+
+Interpreting Experiment 3: Latency
+For Grand Marina's sensors sending data every few seconds, even 50% overhead is negligible.
+
+Interpreting Experiment 4: Stress Test
+What this tells you:
+
+- Normal operation (10/sec): Both configurations handle this easily
+- Emergency mode (50/sec): System meets Grand Marina's peak requirements
+- Beyond requirements (100/sec): You may see TLS overhead here, but this exceeds what the hotel needs
+
+Note: Your actual results may vary depending on your computer's performance. The key question is: Does it handle 50 msg/sec with TLS? That's Grand Marina's emergency requirement.
+
+Capacity planning:
+For Grand Marina Hotel:
+
+50 water sensors
+Normal: 1 message every 5 seconds = 10 msg/sec
+Emergency: 1 message per second = 50 msg/sec
+If your system handles 50 msg/sec with TLS, you meet the requirements. If it handles 100 msg/sec, you have 2× headroom — even better.
+
+Mistake 1: Focusing on Absolute Numbers
+Bad: "TLS adds 6 ms of latency"
+Better: "TLS adds 50% overhead, but total latency is still under 20 ms"
+Context matters. 6 ms is meaningless without knowing the baseline.
+
+Mistake 2: Ignoring Variability
+Bad: "Latency is 18 ms"
+Better: "Latency averages 18 ms (min: 12 ms, max: 45 ms)"
+Spikes can cause problems even when averages look good.
+
+Mistake 3: Over-Generalizing
+Bad: "TLS is slow" 
+Better: "TLS adds approximately 50% overhead on my test system at 10 msg/sec"
+Be specific about your conditions.
+
+Mistake 4: Presenting Data Without Context
+Bad: "Our system handles 50 messages per second with TLS enabled."
+Better: "Our system handles 50 messages per second with TLS — meeting Grand Marina's emergency requirement. For comparison, published IoT security benchmarks show TLS typically adds 20-30% latency overhead on constrained devices, and our results fall within that range."
+Your data becomes more convincing when you can show how it compares to industry benchmarks, real-world incidents, or compliance requirements. That's what separates a lab exercise from a professional assessment.
+You look up from your notes. Your worksheets are full of numbers, but none of them reference anything outside your own experiments.
+
+
+Industry benchmarks:
+• What's a typical TLS latency overhead for IoT systems?
+• What throughput do similar deployments handle?
+• What do industry standards consider "acceptable" performance?
+Real-world incidents:
+• Have similar systems been breached when left unencrypted?
+• What happened to organizations that delayed security implementation?
+• Are there documented cases in your industry (hospitality, healthcare, utilities)?
+Compliance and regulatory requirements:
+• What does your industry require for data in transit?
+• What are the penalties for non-compliance?
+• Are there upcoming regulations that make this more urgent?
+Cost and risk data:
+• What does a data breach cost in your industry?
+• What percentage of organizations in your sector have experienced attacks?
+• How do remediation costs compare to prevention costs?
+
+4 main questions: 
+Will thsi protect the hotel?
+Will it slow down operations?
+Is it worth the effort?
+What do you recommend? 
+
+
+Technical -> Business-Friendly
+"TLS adds 6 ms latency"
+- "Security adds a delay shorter than a blink"
+"Certificate validation prevents PITM attacks"
+- "The system automatically rejects imposters"
+"System handles 50 msg/sec"
+- "We can monitor all 50 sensors even during emergencies"
+"Eavesdropper test showed plain text exposure"
+- "Without security, anyone on the WiFi could spy on our water system"
+
+- placed technical terms ("TLS," "MQTT," "latency") with plain language ("encryption," "scrambled," "how fast readings arrive")
+- How every number is immediately translated ("0.019 seconds" becomes "40 times shorter than a blink")
+- How tests are framed as questions a CIO would ask ("Can outsiders see patient data?" instead of "Eavesdropping Test")
+- wove in real-world research (breach costs, HIPAA penalties, the Contec CMS8000 incident) to make the case urgent
