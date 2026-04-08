@@ -1,0 +1,20 @@
+Check whos connecting:
+
+ID badges for each courier
+- Every authorized person gets a unique photo ID
+- You'll generate client certificates — one per HYDROLOGIC device
+A guard who checks IDs
+- The door guard now asks "Badge, please" before letting anyone through
+- You'll configure Mosquitto to require client certificates (require_certificate true)
+Couriers who carry their badge
+- Each person clips their ID to their jacket before approaching the door
+- You'll update your Python code to present device credentials on every connection
+
+Fake sensor plugged in
+- Hide leaks, report false "normal" readings
+Command injection
+- Open/close gates, disrupt water flow
+Data poisoning
+- Corrupt historical data, make analysis useless
+Denial of service
+- Flood the broker with fake traffic
