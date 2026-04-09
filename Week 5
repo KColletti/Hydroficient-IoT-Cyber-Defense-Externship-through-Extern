@@ -46,3 +46,116 @@ Device with self-signed certificate
 - Mutual TLS (mTLS) adds client verification: the broker checks the device's certificate before allowing the connection
 - The configuration change is minimal — one line in Mosquitto, two lines in Python — but the security impact is significant
 - Unauthorized devices get rejected during the TLS handshake itself, before any MQTT messages are exchanged
+
+datetime, timedelta, timezone
+- For setting "valid from" and "valid until" dates on certificates
+Path
+- For creating the certs/ directory and handling file paths
+cryptography.x509
+- The main certificate building library
+NameOID
+- Standard identifiers for certificate fields (country, organization, common name)
+hashes
+- Cryptographic hash algorithms (SHA256) for signing
+serialization
+- For saving certificates and keys to .pem files
+rsa
+- RSA key pair generation (public + private key)
+default_backend
+- Cryptographic backend (handles the actual math)
+
+The Device List
+- Each entry maps to one of The Grand Marina's 3 HYDROLOGIC devices. The name becomes the certificate's Common Name (CN) — this is how the broker identifies which device is connecting.
+
+The Certificate Generation Function
+- This is the core of the script. For each device, it:
+- Generates a private key for the device
+- Creates the certificate with the device's identity
+- Signs the certificate with the CA's key
+    = Each device gets its own RSA key pair — separate from the CA's key and the server's key. This is like issuing each employee their own unique badge, not copies of the same badge.
+
+.subject_name(subject)
+- Who this certificate belongs to (the device)
+.issuer_name(ca_cert.subject)
+- Who signed it -- the CA, not itself
+.public_key(...)
+- Embeds the device's public key
+.serial_number(...)
+- Unique ID for this certificate
+.not_valid_before(...)
+- Certificate is valid starting now
+.not_valid_after(... + 365 days)
+- Expires in 1 year
+.add_extension(ca=False)
+- This is NOT a CA — it can't sign other certs
+.add_extension(CLIENT_AUTH)
+- Marks this for client authentication — the broker checks this
+.sign(ca_key, ...)
+- Signed by the CA's private key — this is what makes it trusted
+
+ca.pem
+- Everyone (broker + all devices)
+- Yes — it's the public certificate
+ca-key.pem
+- Nobody except the CA admin
+- NO — this signs new certificates
+server.pem
+- Broker only
+- Yes — it's the public certificate
+server-key.pem
+- Broker only
+- NO — broker's private key
+device-XXX.pem
+- One specific device
+- Yes — it's that device's public certificate
+device-XXX-key.pem
+- One specific device
+- NO — that device's private key
+
+require_certificate true — flips the broker from "accepts anyone with encryption" to "requires proof of identity."
+
+listener 8883
+- Opens port for TLS connections
+- Required(1 way) 
+- Required (mlts)
+cafile certs/ca.pem
+- CA certificate for verifying
+- Not used (no client certs to check) (1 way) 
+- Verifies client certificates (mlts)
+certfile certs/server.pem
+- Broker's certificate 
+- Proves broker's identity (1 way) 
+- Proves broker's identity (mlts)
+keyfile certs/server-key.pem
+- Broker's private key 
+- For TLS handshake (1 way) 
+- For TLS handshake (mlts)
+require_certificate true
+- Demands client certificates 
+- Not present (1 way) 
+- The key change (mlts)
+
+use_identity_as_username true
+ 
+When device-001 connects with a certificate that has CN=HYDROLOGIC-MainBuilding-001:
+Without: 
+Username = whatever the client claims
+Client could lie about identity
+Logs show arbitrary names
+
+With: 
+Username = HYDROLOGIC-MainBuilding-001
+Identity comes from verified certificate
+Logs show verified device names
+
+Client without any certificate:
+- OpenSSL Error: error:...peer did not return a certificate
+Client connection from 192.168.1.100 failed: protocol error.
+
+Client with a certificate from the wrong CA:
+- OpenSSL Error: error:...certificate verify failed
+Client connection from 192.168.1.100 failed: protocol error.
+
+Client with expired certificate:
+- OpenSSL Error: error:...certificate has expired
+Client connection from 192.168.1.100 failed: protocol error.
