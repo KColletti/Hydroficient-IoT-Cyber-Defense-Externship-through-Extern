@@ -161,3 +161,29 @@ Client with expired certificate:
 Client connection from 192.168.1.100 failed: protocol error.
 
 Week 5 Secure Pipline with mTLS PDF
+- Connection time will be measurably slower with mTLS. The extra certificate exchange adds a round-trip plus verification time. On a local machine, this might be 5-20 milliseconds extra. On a remote connection, it could be more.
+- Message latency (after the connection is established) should be nearly identical. Once the TLS handshake completes, both one-way TLS and mTLS use the same encrypted channel. The handshake is a one-time cost per connection, not per message.
+- Think of it like entering a building. With one-way TLS, the guard checks your badge and waves you through. With mTLS, the guard checks your badge and you verify the guard's ID before entering. It takes a few extra seconds at the door — but once you're inside, you walk at the same speed either way.
+
+connection
+- Time to establish a connection (TLS vs mTLS)
+- python mtls_benchmark.py --mode connection
+latency
+- Round-trip message time after connection (TLS vs mTLS)
+- python mtls_benchmark.py --mode latency
+
+Connection time +30%
+~7 ms extra
+- Devices connect once and stay connected. This cost is paid once per session, not per message.
+Message latency +5%
+~0.2 ms extra
+- Sensor readings every 5 seconds. A fraction-of-a-millisecond delay is invisible.
+Leak detection
+No change
+- Leaks take minutes to develop. Millisecond differences don't affect detection.
+
+-mTLS adds overhead to connection setup (extra certificate exchange), not to message delivery
+-Connection overhead is a one-time cost — devices connect once and stay connected for hours
+-Message latency should be nearly identical between TLS and mTLS
+-Context matters more than percentages — 30% of 24ms is still only 7ms
+-"We don't guess, we measure" — run the experiments and get your own numbers
