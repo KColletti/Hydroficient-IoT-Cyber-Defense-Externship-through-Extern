@@ -159,3 +159,5 @@ Client connection from 192.168.1.100 failed: protocol error.
 Client with expired certificate:
 - OpenSSL Error: error:...certificate has expired
 Client connection from 192.168.1.100 failed: protocol error.
+
+Week 5 Secure Pipline with mTLS PDF
