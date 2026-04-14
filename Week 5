@@ -189,3 +189,6 @@ No change
 -"We don't guess, we measure" — run the experiments and get your own numbers
 
 
+Marcus adding device identity verification to the pipeline increases connection time by approximately 2.43 ms and message latency by approximately -0.01 ms (effectively 0 ms). Given that devices connect once and send readings every 5 seconds, this overhead is acceptable. My recommendation is to implement mutual TLS (device identity verification) because it provides significantly stronger security with negligible performance impact, especially since connection cost is one-time and message latency impact is effectively zero in real-world usage.
+
+Week 5 Benchmark mTLS and Report to Marcus 
