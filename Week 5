@@ -192,3 +192,21 @@ No change
 Marcus adding device identity verification to the pipeline increases connection time by approximately 2.43 ms and message latency by approximately -0.01 ms (effectively 0 ms). Given that devices connect once and send readings every 5 seconds, this overhead is acceptable. My recommendation is to implement mutual TLS (device identity verification) because it provides significantly stronger security with negligible performance impact, especially since connection cost is one-time and message latency impact is effectively zero in real-world usage.
 
 Week 5 Benchmark mTLS and Report to Marcus 
+
+Breaking (finding gaps) 
+Can a device with a valid certificate connect?
+- mTLS works for legitimate devices
+Can a device with no certificate connect?
+- Rogue devices are blocked
+Can a device with a certificate from a different CA connect?
+- Only our devices are accepted
+Can a device with an expired certificate connect?
+- Credential lifecycle is enforced
+
+
+- Testing your security means trying to break it — not just confirming the happy path works
+- Four attack scenarios verify your mTLS: valid cert, no cert, wrong CA, and expired cert
+- Error messages during rejected connections are proof that your security controls are working, not bugs
+- The identity_tester.py script automates all four scenarios for consistent, repeatable testing
+
+Week 5 Kayla Colletti Identity Attack Simulations         
