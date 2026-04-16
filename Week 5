@@ -209,4 +209,18 @@ Can a device with an expired certificate connect?
 - Error messages during rejected connections are proof that your security controls are working, not bugs
 - The identity_tester.py script automates all four scenarios for consistent, repeatable testing
 
-Week 5 Kayla Colletti Identity Attack Simulations         
+Week 5 Kayla Colletti Identity Attack Simulations      
+
+Provisioning is the process of onboarding a new device into your IoT system. It includes generating unique credentials, configuring the device to connect to the right endpoints, registering it with the cloud platform, and verifying it works before going live.
+- Manual Provisioning
+A technician manually generates certificates, copies them to the device, and configures it.
+- Automated Provisioning
+Devices provision themselves using a secure bootstrap process 
+
+6 stages of certificate lifecycle
+- CSR generation= The device generates a key pair and a Certificate Signing Request (CSR)
+- validation = Before signing, the CA checks that the request is legitimate
+- issuance = The CA signs the certificate, giving the device its cryptographic identity     — proof that
+- monitoring = Certificates expire. Someone needs to track when they're approaching expiry and renew them before the device gets locked out.  
+- active use= the device uses its certificate to authenticate every time it connects.
+- installation = The signed certificate and private key are deployed to the device. This is the trickiest stage for IoT — if someone intercepts the private key during transfer, they can impersonate that device. That's why most production systems generate the key on the device, so it never leaves.
