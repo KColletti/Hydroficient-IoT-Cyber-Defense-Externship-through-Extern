@@ -1,0 +1,5 @@
+A replay attack re-sends a legitimate message — the attacker doesn't break encryption or forge certificates
+mTLS protects connections (who can connect) but not message content (whether a message is new or old)
+Replay attacks are especially dangerous in IoT because messages control physical equipment
+Your current subscriber has zero message validation — it accepts everything the broker delivers
+Three questions to ask: Is this fresh? Have I seen it? Did the real sender create it?
