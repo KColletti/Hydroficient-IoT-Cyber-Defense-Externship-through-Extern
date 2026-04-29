@@ -229,3 +229,14 @@ Devices provision themselves using a secure bootstrap process
 Week 5: Provisioning Policy Template
 Stolen Device: 
 We treat a stolen device exactly like a compromised one by revoking its certificate and killing its active connection to the broker. This ensures the device is immediately blocked from the network and can no longer send or receive telemetry data. Since the system relies on mTLS, the hardware becomes useless for accessing our environment once the identity is invalidated
+
+Accomplished so far: 
+Now:
+Data in transit — encrypted end-to-end with TLS
+Device identity — verified with mutual authentication (mTLS)
+Message routing — structured with MQTT topics and broker-level access control
+Security controls — tested and proven with attack simulations
+Performance impact — measured and documented
+Operational policy — written, covering onboarding through decommissioning
+The system isn't theoretical. It's running. And the documentation means someone can maintain it after you.
+
