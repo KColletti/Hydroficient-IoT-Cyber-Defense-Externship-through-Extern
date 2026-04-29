@@ -224,3 +224,8 @@ Devices provision themselves using a secure bootstrap process
 - monitoring = Certificates expire. Someone needs to track when they're approaching expiry and renew them before the device gets locked out.  
 - active use= the device uses its certificate to authenticate every time it connects.
 - installation = The signed certificate and private key are deployed to the device. This is the trickiest stage for IoT — if someone intercepts the private key during transfer, they can impersonate that device. That's why most production systems generate the key on the device, so it never leaves.
+
+
+Week 5: Provisioning Policy Template
+Stolen Device: 
+We treat a stolen device exactly like a compromised one by revoking its certificate and killing its active connection to the broker. This ensures the device is immediately blocked from the network and can no longer send or receive telemetry data. Since the system relies on mTLS, the hardware becomes useless for accessing our environment once the identity is invalidated
