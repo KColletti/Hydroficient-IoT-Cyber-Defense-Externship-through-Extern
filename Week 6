@@ -3,3 +3,10 @@ mTLS protects connections (who can connect) but not message content (whether a m
 Replay attacks are especially dangerous in IoT because messages control physical equipment
 Your current subscriber has zero message validation — it accepts everything the broker delivers
 Three questions to ask: Is this fresh? Have I seen it? Did the real sender create it?
+
+
+Your current subscriber's on_message callback has zero validation — it accepts any valid JSON
+Three checks are needed: timestamp freshness, sequence tracking, and HMAC signature verification
+No single defense covers every scenario — timestamps miss fast replays, counters miss modified messages, signatures miss exact replays
+The hotel badge analogy: date stamp + unique number + holographic seal = comprehensive protection
+Together, the three defenses cover each other's blind spots
