@@ -10,3 +10,10 @@ Three checks are needed: timestamp freshness, sequence tracking, and HMAC signat
 No single defense covers every scenario — timestamps miss fast replays, counters miss modified messages, signatures miss exact replays
 The hotel badge analogy: date stamp + unique number + holographic seal = comprehensive protection
 Together, the three defenses cover each other's blind spots
+
+No difference- the system accpeted replays 
+Week 6- No difference 
+
+
+
+
