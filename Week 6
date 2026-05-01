@@ -72,3 +72,22 @@ Accpeted and Rejected Screenshots
 
 
 Week 6 Kayla Colletti Defense Experiment Results
+
+- AWS IoT Core uses message deduplication to prevent replays. When a device publishes with QoS 1, AWS tracks message IDs and discards duplicates within a 5-minute window. This is conceptually similar to your sequence counter, though implemented at the broker level rather than the subscriber level.
+
+- IEC 62443 is the security standard for industrial control systems — the kind of systems that run water treatment plants. It requires message integrity checks and replay protection. In other words, what you built this week is what the standard says you should build.
+
+- MQTT v5 added a built-in message expiry feature. Publishers set how long a message is valid, and the broker throws out anything older. Same idea as your timestamp check, but handled by the broker instead of your code.
+
+A good recommendation has five components. Miss one and the reader has unanswered questions. Here's the structure.
+1. The problem — one sentence describing the vulnerability.
+2. What you tested — brief description of the experiments. 
+3. What you found — the key result.
+4. Your recommendation — the specific action. 
+5. What comes next — the forward look. 
+
+- Each defense has trade-offs beyond effectiveness: code complexity, performance impact, and failure modes
+- All three checks combined take less than a millisecond per message — negligible against the 5-second publishing interval
+- A good recommendation includes: the problem, what you tested, what you found, your specific recommendation, and next steps
+
+Week 6 Kayla Colletti Defense Comparison Report
