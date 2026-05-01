@@ -58,3 +58,7 @@ Recap
 - Phase 3 (replay) is caught by the sequence counter and/or timestamp check — the subscriber rejects duplicate or stale messages
 - Every attack should be blocked — the dashboard will show red alerts and increment the "Attacks Blocked" counter
 - No single defense stops everything — the three layers (HMAC, timestamp, sequence) work together, and the dashboard makes that visible
+
+Week 7 Alert 
+Week 7 bottom foter 
+Week 7 subscriber 
