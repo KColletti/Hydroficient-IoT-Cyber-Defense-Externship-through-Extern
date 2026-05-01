@@ -1,0 +1,38 @@
+Will build a live dashboard - terminal output will fail when needed in a timley fashion
+
+Three levels of security monitoring 
+- Terminal subscriber 
+- Real- time Dashboard 
+- AI- Assisted Monitoring 
+
+- The dashboard doesn't replace your subscriber's validation logic — it gives it a visual interface
+- Real-time dashboards are standard practice across the security industry
+- Your dashboard answers four questions: Is it running? What are the readings? Has anything been blocked? What happened recently?
+
+The dashboard has five visual sections:
+
+Header — shows "GRAND MARINA," a live clock, and a green "LIVE" indicator that turns red if the WebSocket disconnects
+Maya section — a welcome message from Maya for the operator
+Zone cards — three cards for Main Building, Pool & Spa, and Kitchen & Laundry. Each one shows pressure, flow rate, and gate position for that area
+Security section — a status panel that shows "All systems operating normally" in green or "ATTACK DETECTED" in red, plus a scrolling event log
+Stats footer — three numbers at the bottom: valid messages, attacks blocked, total processed
+
+Component 2: dashboard_server.py — "The Messenger"
+
+This is the bridge between Python and the browser. It runs two servers:
+HTTP server on port 8000 — serves dashboard.html when you visit http://localhost:8000 in your browser. Simple file server — just hands the HTML file to the browser.
+WebSocket server on port 8765 — keeps an open connection with the browser. When the subscriber calls log_valid_message() or log_rejected_message(), this server broadcasts the event to every connected browser tab.
+
+Component 3: subscriber_dashboard.py — "The Security Guard"
+
+This is the most important file. It combines everything from Week 6's (Project 6) subscriber_defended.py with the dashboard integration. The validation logic is identical:
+HMAC check — is the signature valid? Catches message tampering.
+Timestamp check — is the message fresh? Catches stale replays.
+Sequence check — is this a new message? Catches recent replays.
+
+Component 4: publisher_defended.py — "The Sensor"
+
+This one's easy. It's the same publisher as Project 6. Hasn't changed. It still connects to the mTLS broker with its device certificate, generates simulated sensor readings, signs each message with HMAC, increments the sequence counter, and publishes.
+The publisher doesn't know the dashboard exists — and it doesn't need to. It just sends data. The subscriber handles everything else.
+
+Week 7 Main Building Live Data 
