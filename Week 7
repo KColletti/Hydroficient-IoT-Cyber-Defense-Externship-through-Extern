@@ -36,3 +36,25 @@ This one's easy. It's the same publisher as Project 6. Hasn't changed. It still 
 The publisher doesn't know the dashboard exists — and it doesn't need to. It just sends data. The subscriber handles everything else.
 
 Week 7 Main Building Live Data 
+
+Time to break it: 
+Phase 1: Eavesdrop -The simulator subscribes to hydroficient/grandmarina/# and intercepts legitimate messages from your publisher. It displays them in the terminal with a dramatic "INTERCEPTED" box showing the topic, pressure, flow rate, and timestamp.
+
+Phase 2: Inject Fake Data- The simulator publishes a message with:
+A valid-looking device ID (HYDROLOGIC-Device-001)
+A current timestamp
+A high sequence number (99999)
+Dangerous sensor values (250 PSI pressure — double the normal range)
+A fake HMAC signature (FAKE_HMAC_0000...)
+
+Phase 3: Replay - 
+The simulator re-sends one of the messages it captured during Phase 1. This is a real captured message — it has a valid HMAC, because it was originally signed by the real publisher. But by the time it's replayed, two things have gone wrong:
+The timestamp is stale. Several seconds have passed since the original message was sent. The subscriber's 30-second freshness window may catch this, especially if the eavesdropping phase ran long enough.
+The sequence number is old. The subscriber already accepted the original message and recorded its sequence number. Seeing the same number again triggers the replay defense.
+
+Recap
+- The attack simulator runs three phases: eavesdrop (passive), inject (fake HMAC), and replay (re-send captured message)
+- Phase 2 (injection) is caught by HMAC verification — the attacker can't forge the signature without the shared secret
+- Phase 3 (replay) is caught by the sequence counter and/or timestamp check — the subscriber rejects duplicate or stale messages
+- Every attack should be blocked — the dashboard will show red alerts and increment the "Attacks Blocked" counter
+- No single defense stops everything — the three layers (HMAC, timestamp, sequence) work together, and the dashboard makes that visible
