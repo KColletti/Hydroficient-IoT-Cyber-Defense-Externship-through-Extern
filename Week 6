@@ -62,3 +62,13 @@ The subscriber is backward-incompatible — it requires the defended publisher
 
 
 Accpeted and Rejected Screenshots 
+
+
+- testing four defense configurations against three attack types — twelve experiments total
+- The independent variable is the defense setting; the dependent variable is the rejection rate
+- Controlled variables (broker, certs, message count) stay the same so you can isolate what's working
+- defense_tester.py automates the full sequence: generate messages, process them, create attacks, measure results
+- The chart makes patterns visible: no defense blocks nothing, individual defenses have gaps, all three together reach 100%
+
+
+Week 6 Kayla Colletti Defense Experiment Results
