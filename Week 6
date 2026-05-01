@@ -15,5 +15,50 @@ No difference- the system accpeted replays
 Week 6- No difference 
 
 
+Defense 1: Timestamp Validation
+Your publisher already puts a timestamp in every message — has since week 3 (Project 3). The problem is nobody checks it.
+Timestamp validation applies one rule: if a message is older than a configured window (say, 30 seconds), reject it.
+Think of it like a parking ticket. When you park at a meter, the ticket shows the time you paid. A parking enforcement officer checks whether the ticket is still valid — if it expired 2 hours ago, you get a citation. The ticket itself is legitimate (you really did pay), but it's no longer current.
+
+What it catches: Replays that happen after the window expires (the most common type).
+ 
+What it misses: Immediate replays (within the window). If an attacker replays a message 3 seconds after capturing it, the timestamp still looks fresh.
+
+Defense 2: Sequence Counter
+A sequence counter assigns each message a unique, incrementing number — like a concert ticket with a unique barcode. Once it's scanned, it can't be used again. The subscriber tracks the last sequence number it saw from each device and rejects any message with a number that's the same or lower. Once barcode #847 is scanned at the gate, it won't work again — even if someone presents a perfect photocopy five seconds later.
+
+ 
+What it catches: Any exact replay (the sequence number was already used) and most replay attacks regardless of timing.
+ 
+What it misses: Modified replays where the attacker increments the sequence number. If the attacker knows the current counter is at 42, they could set their replayed message to sequence 43. The counter alone won't catch that.
+
+Defense 3: HMAC Message Signing
+The third defense protects the message itself — not when it was sent, not whether you've seen it, but whether anyone tampered with it.
+Think of a wax seal on a letter. In the days before envelopes, important letters were folded and sealed with wax stamped by the sender's signet ring. If the seal was intact when the letter arrived, you knew nobody had tampered with it. If the seal was broken, you knew someone had opened and possibly altered the letter.
+HMAC (Hash-based Message Authentication Code) works the same way. The publisher computes a signature over the entire message contents using a secret key, and the subscriber verifies it. If anyone modifies even a single character of the message, the signature becomes invalid.
+HMAC works differently from TLS encryption. TLS protects the message in transit — nobody can read it while it's traveling between devices. HMAC protects the message content — nobody can modify it after the publisher created it. TLS is like an armored truck. HMAC is like a tamper-evident seal on the package inside the truck.
+
+What it catches: Any message modification — changed sensor values, altered timestamps, edited device IDs. The signature covers every field.
+ 
+What it misses: Exact replays of unmodified messages. If the attacker replays the message byte-for-byte without changing anything, the HMAC is still valid. That's why you need timestamps and sequence counters to catch unmodified replays.
+
+The defended publisher adds two fields to every message: sequence (incrementing counter) and hmac (SHA-256 signature)
+HMAC is computed over all message fields except hmac itself, using sort_keys=True for consistent ordering
+The SHARED_SECRET must match exactly between publisher and subscriber
+Both hmac and hashlib are built into Python — no new packages needed
+The sequence number and changing timestamp produce a unique signature for every message
+
+Defended Subscriber: 
+The Validation Pipeline
+The validate_message() function runs all three checks in a specific order: HMAC first, then timestamp, then sequence. The order is not arbitrary.
+
+If any check fails, the function returns immediately with False and the results so far. The subscriber does not need to know why the other checks would have passed or failed — one failure is enough to reject.
+ 
+The defended subscriber validates every message through three checks: HMAC, timestamp, sequence
+Checks run in order: tampered messages are caught first, then old ones, then duplicates
+hmac.compare_digest() prevents timing-based attacks on the secret
+Each device has its own independent sequence counter
+The subscriber is backward-incompatible — it requires the defended publisher
 
 
+Accpeted and Rejected Screenshots 
