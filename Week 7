@@ -62,3 +62,42 @@ Recap
 Week 7 Alert 
 Week 7 bottom foter 
 Week 7 subscriber 
+
+Build Final Presentation 
+- Slide 1: Title Slide
+Your name, the project title, and the Hydroficient branding. Fill in your name and any subtitle you want. Simple — make it yours.
+- Slide 2: The Threat
+Three cards — Eavesdrop, Inject Fake Data, Replay Attack. The card titles are already there. You need to describe what each attack does and why it's dangerous, in your own words. There's also a summary line at the bottom asking why unprotected IoT pipelines are vulnerable.
+Why this slide: Always start with the problem. Before anyone can appreciate what you built, they need to understand what you were up against. Don't just list the attack names — explain what each one actually does and why it's dangerous.
+- Slide 3: Defense Architecture
+Four defense layer boxes labeled Defense 1 through Defense 4. For each one, fill in the name of the defense (e.g., TLS, mTLS, HMAC, Timestamps & Sequence Counters) and explain what it does and which attack it stops. At the bottom, explain why you need all four — what happens if you remove one?
+Why this slide: Now that you've laid out the threats, the natural next question is — what did you do about them? This is where you show the solution you built. The key point to make: every layer matters. If you remove one, a specific attack gets through. That's what makes this architecture strong.
+- Slide 4: Experiment Setup
+Two sections side by side. On the left, insert a diagram of your experiment setup (how the publisher, broker, subscriber, attacker, and dashboard connect). On the right, describe your setup process step by step — what components were running, how you launched the attack simulator, and what you were monitoring.
+Why this slide: You've shown the threats and the defenses — now explain how you actually put them to the test. Without this context, the results on the next slide have nothing to stand on. Walk the audience through your setup so they can trust the findings.
+- Slide 5: Attack Result
+A table with four columns: Attack Phase, What the Attacker Tried, Defense That Caught It, and Why It Works. The phase names (Eavesdrop, Inject, Replay) are filled in. You fill in the rest from your experiment results.
+Why this slide: This is where your experiment data speaks for itself. You ran the attacks, the defenses caught them — now present that evidence clearly. Which attacks were attempted, what caught them, and why it worked.
+- Bonus Slide: Analysis Chart (Optional)
+If you want to make your presentation stand out, consider adding a chart slide right here — between your attack results and your screenshots. You already have the data from your experiments across Projects 4-6. A bar chart showing defense effectiveness (rejection rates across your 12 test configurations from Project 6) is probably your most powerful visual. You could also chart TLS latency impact (with vs. without encryption from Project 4) or mTLS overhead comparison (one-way vs. mutual TLS from Project 5). Pick whichever dataset tells the clearest story — one strong chart beats three cluttered ones.
+Why this slide: Numbers in a table are good. Numbers in a chart are better. A well-chosen chart turns your raw experiment data into a visual argument that lands instantly. This slide isn't required — your template works fine without it — but it's the kind of extra effort that signals you can communicate data, not just collect it.
+- Slides 6-8: Screenshots: 
+Three slides for visual evidence from your dashboard:
+Slide 6 — Dashboard during an active attack (red alerts, shaking zone cards, rejection logs)
+Slide 7 — Stats footer showing attacks blocked vs. valid messages accepted
+Slide 8 — Your customized dashboard (custom title, color theme, renamed zones)
+For each slide, insert a screenshot or screen recording from your own dashboard. If you have a video of your dashboard in action (attacks being blocked live, zone cards updating in real time), use that — video is even more impactful than a static screenshot. Wherever you can add video, do it.
+Why these slides: Talking about results is one thing — showing them is another. These slides are your proof. Screenshots and videos of your dashboard blocking attacks in real time, your stats, and your custom design show that you actually built this and that it works.
+- Slide 9: Key Insights
+Four numbered insights. The first one is filled in as an example: "No single defense is enough." The other three are yours to write. Think about what surprised you, what you learned, and what you'd do differently.
+Why this slide: You've shown what happened — now share what you took away from it. This is where you go beyond the data and show that you can think critically about security, not just follow instructions.
+-Slide 10: Recommendations
+Four numbered recommendations for Grand Marina. All are placeholder prompts. Think about what the hotel should do next — deploy to production? Add monitoring? Create incident response plans? Automate certificate rotation? These should be specific and actionable.
+Why this slide: This is the slide that separates someone who can execute tasks from someone who can advise on what should happen next. Think beyond the current project — what would you recommend if this were a real engagement?
+
+Quick Recap
+Your presentation should answer four things clearly: what you tested, what you found, what you learned, and what you recommend.
+The template follows a story arc — problem → solution → proof → insights → next steps. Every slide builds on the one before it.
+Show, don't just tell. Screenshots and videos of your dashboard in action are more convincing than any bullet point.
+
+How to have AI help organize 
