@@ -100,4 +100,8 @@ Your presentation should answer four things clearly: what you tested, what you f
 The template follows a story arc — problem → solution → proof → insights → next steps. Every slide builds on the one before it.
 Show, don't just tell. Screenshots and videos of your dashboard in action are more convincing than any bullet point.
 
-How to have AI help organize 
+Have AI help organize thoughts for presentation 
+
+- Even in a live IoT system with real-time monitoring, you can fully protect devices using layered security like TLS, mTLS, message validation, and monitoring, without slowing down or breaking the dashboard. The key idea is that strong security can be built in from the start and still keep the system practical to use.
+
+Kayla Colletti IoT Security Capstone 
